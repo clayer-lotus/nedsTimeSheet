@@ -1,0 +1,40 @@
+.header{
+    height: 220px;
+    background: linear-gradient(to right,#070785,#2980bd);
+}
+
+.team-timesheet {
+    background-color: white;
+    padding: 10px 10px;
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+/* Go back */
+
+.icon-bar {
+    position: fixed;
+    top: 13%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  
+  .icon-bar a {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    transition: all 0.3s ease;
+    color: #355bad;
+    
+  }
+  
+  .icon-bar a:hover {
+    background-color: #3b5898c9;
+    color: #fff;
+  }
+  
+  .goback {
+    background: #ffff;
+    color: #3B5998;
+  }

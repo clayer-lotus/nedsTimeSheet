@@ -1,0 +1,24 @@
+
+.page-header {
+    color: white;
+}
+
+.bg-gradient-primary-to-secondary {
+    background: linear-gradient(to right,#070785,#2980bd);
+}
+
+img {
+    background-color: white;
+}
+
+.team-timesheet {
+    background-color: white;
+    padding: 10px 10px;
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+
+i{
+    font-size: 20px;
+}
