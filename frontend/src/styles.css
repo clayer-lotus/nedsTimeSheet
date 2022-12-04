@@ -46,3 +46,8 @@ thead th {
 td {
     padding: 15px !important; 
 }
+
+table{
+    --bs-table-striped-bg: rgba(144, 136, 136, 0.05) !important;
+
+}
