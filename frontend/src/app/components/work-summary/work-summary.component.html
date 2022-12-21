@@ -2,12 +2,12 @@
   <div class="row text-white">
     <div class="col-lg-12 d-flex justify-content-center align-items-center text-center header">
       <div>
-        <div class="page-title pt-3 pb-4" >
+        <div class="page-title pt-3 pb-4">
           <p class="fs-1">Detailed Timed Report</p>
-         
+
         </div>
-        <p class="fs-4 fw-bold">Sam Campisano</p>
-         <p class="fs-5">(2022-12-01 to 2022-12-05)</p>
+        <p class="fs-4 fw-bold">{{this.personName}}</p>
+        <p class="fs-5">({{this.from}} to {{this.to}})</p>
       </div>
     </div>
   </div>
@@ -32,19 +32,19 @@
           </tr>
         </thead>
         <tbody class="">
-          <tr class="table-warning">
-            <th scope="row" class="fs-5">Sam Campisano</th>
-            <td>27</td>
-            <td>1</td>
-            <td>0</td>
-            <td>0</td>
-            <td>7.2</td>
-            
-            <td>7.2</td>
-            <td>0</td>
-            
-            <td>7.2</td>
-            <td>0</td>
+          <tr class="table-warning" *ngFor="let dataHrs of headTimesheetData; index as i">
+            <th scope="row" class="fs-5">{{headTimesheetData[0]._id}}</th>
+            <td class="text-center">{{headTimesheetData[0].ordinaryHour}}</td>
+            <td class="text-center">{{headTimesheetData[0].timeAndAHalf}}</td>
+            <td class="text-center">{{headTimesheetData[0].doubleTime}}</td>
+            <td class="text-center">{{headTimesheetData[0].tripleTime}}</td>
+            <td class="text-center">{{headTimesheetData[0].rdoHours}}</td>
+
+            <td class="text-center">{{headTimesheetData[0].personalAndCares}}</td>
+            <td class="text-center">{{headTimesheetData[0].annualleave}}</td>
+
+            <td class="text-center">{{headTimesheetData[0].publicHoliday}}</td>
+            <td class="text-center">{{headTimesheetData[0].unpaidleave}}</td>
           </tr>
 
 
@@ -62,7 +62,7 @@
             <th scope="col" colspan="2">Location</th>
             <th scope="col" rowspan="2">Kms</th>
             <th scope="col" rowspan="2">Time Spent</th>
-            <th scope="col" rowspan="2"><i class="fa fa-clock-o " aria-hidden="true"></i> Total Hrs</th>
+            <!-- <th scope="col" rowspan="2"><i class="fa fa-clock-o " aria-hidden="true"></i> Total Hrs</th> -->
 
           </tr>
           <tr class="">
@@ -74,73 +74,63 @@
           </tr>
         </thead>
         <tbody class="">
-          <tr>
-            <th scope="row" rowspan="3">2022-12-01</th>
-            <td>Brooks</td>
-            <td>Saint Albert</td>
-            <td>10</td>
-            <td>2</td>
-            <td>12</td>
-          </tr>
-          <tr>
-            <td>Vancouver</td>
-            <td>Victoria</td>
-            <td>5</td>
-            <td>3</td>
-            <td>8</td>
-          </tr>
-          <tr>
-            <td>Victoria</td>
-            <td>Saint John</td>
-            <td>11</td>
-            <td>5</td>
-           <td>16</td>
-          </tr>
+          <ng-container *ngFor="let data of sheetDismantleData; index as i ">
+            <tr class="">
+              <td scope="row" class="fw-bold">{{sheetDismantleData[i].date | date}}</td>
+              <ng-container *ngIf="sheetDismantleData[i].isLeave == 'No'">
+                <td>{{sheetDismantleData[i].details[1].from}}</td>
+                <td>{{sheetDismantleData[i].details[1].to}}</td>
+                <td class="fw-bold text-center">{{sheetDismantleData[i].details[1].kms}}</td>
+                <td class="fw-bold text-center">{{sheetDismantleData[i].details[1].timespent}}</td>
+              </ng-container>
+              <ng-container *ngIf="sheetDismantleData[i].isLeave == 'Yes'">
+                <td colspan="1" class="text-red">{{sheetDismantleData[i].details[1].typeOfLeave}}</td>
+                <td colspan="2" class="text-red">{{sheetDismantleData[i].details[1].leaveDetails}}</td>
+                <td>
 
-          <!-- 2nd COL -->
-          <tr>
-            <th scope="row" rowspan="2">2022-12-02</th>
-            <td>Brooks</td>
-            <td>Saint Albert</td>
-            <td>10</td>
-            <td>2</td>
-            <td>12</td>
-          </tr>
-          <tr>
-            <td>Vancouver</td>
-            <td>Victoria</td>
-            <td>5</td>
-            <td>3</td>
-            <td>8</td>
-          </tr>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#staticBackdrop' + i" >
+                    Leave Document 
+                  </button>
+
+                  <!-- Modal -->
+                  <div class="modal  fade" id="staticBackdrop{{i}}" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <p class="modal-title fs-5" id="staticBackdropLabel">{{this.personName}} :
+                            {{sheetDismantleData[i].details[1].typeOfLeave}} ({{sheetDismantleData[i].date | date}})</p>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <img src={{sheetDismantleData[i].details[1].leaveDetails}} width="100%" alt="">
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
 
-          <!-- 3RD COLUMNS -->
-          <tr>
-            <th scope="row" rowspan="3">2022-12-03</th>
-            <td>Brooks</td>
-            <td>Saint Albert</td>
-            <td>10</td>
-            <td>2</td>
-            <td>14</td>
-          </tr>
-          <tr>
-            <td>Vancouver</td>
-            <td>Victoria</td>
-            <td>5</td>
-            <td>3</td>
-            <td>8</td>
-          </tr>
-          <tr>
-            <td>Victoria</td>
-            <td>Saint John</td>
-            <td>11</td>
-            <td>5</td>
-            <td>16</td>
+                </td>
+
+              </ng-container>
+
+
+            </tr>
+
+
+
+          </ng-container>
+          <tr class="table-success fs-5 fw-bold">
+            <td colspan="3">Total</td>
+            <td class="text-center">{{this.totalKms}} kms</td>
+            <td class="text-center">{{this.totalTimespent}} hrs</td>
           </tr>
 
-          <!-- 4th columm -->
-          <tr class="table-danger">
+          <!-- 4th columm LEAVE-->
+          <!-- <tr class="table-danger">
             <th scope="row">2022-12-04</th>
             <td colspan="2">Sick Leave</td>
             <td colspan="2">I am down with fever and flu because of which I will not be able to come to the office.
@@ -149,34 +139,8 @@
             <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 Leave Document
               </button></td>
-          </tr>
+          </tr> -->
 
-          <!-- 5th Column -->
-
-          <!-- 2nd COL -->
-          <tr>
-            <th scope="row" rowspan="2">2022-12-05</th>
-            <td>Brooks</td>
-            <td>Saint Albert</td>
-            <td>10</td>
-            <td>2</td>
-            <td>12</td>
-          </tr>
-          <tr>
-            <td>Vancouver</td>
-            <td>Victoria</td>
-            <td>5</td>
-            <td>3</td>
-            <td>8</td>
-          </tr>
-
-          <!-- 6h columm -->
-          <tr class="table-success fs-5 fw-bold">
-            <td  colspan="3">Total</td>
-            <td>82 kms</td>
-            <td>27 hrs</td>
-            <td>114 hrs</td>
-          </tr>
         </tbody>
       </table>
     </div>
@@ -185,28 +149,8 @@
 </section>
 
 
-  <!-- Modal -->
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <p class="modal-title fs-5" id="staticBackdropLabel">Sam : Sick Leave (2022-12-04) </p>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <img
-            src="https://www.hrcabin.com/wp-content/uploads/2022/05/Physical-fitness-certificate-format-download-word-and-PDF.png"
-            width="100%" alt="">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="icon-bar">
-    <a href="#" class="goback"><i class="fa fa-arrow-circle-o-left fs-1" aria-hidden="true"></i></a> 
-  </div>
+<div class="icon-bar">
+  <a href="#" class="goback"><i class="fa fa-arrow-circle-o-left fs-1" aria-hidden="true"></i></a>
+</div>

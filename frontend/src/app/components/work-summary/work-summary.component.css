@@ -38,3 +38,8 @@
     background: #ffff;
     color: #3B5998;
   }
+
+  .text-red{
+    color: red;
+    font-weight: 700;
+  }
