@@ -23,11 +23,15 @@ router.post('/', async (req, res) => {
 // UPDATE FILE LINK
 router.post('/update/fileLink/:piid/:fileLink', async (req, res) => {
     try{
-        console.log(req.params.piid);
-        const timesheet = await Timesheet.findOne({piid: req.params.piid});
-        timesheet.leaveFileLink = "https://files.podio.com/" + req.params.fileLink;      
-        const t1 = await timesheet.save();
-        res.status(200).json(true);
+
+        setTimeout(async function() {
+            console.log(req.params.piid);
+            const timesheet = await Timesheet.findOne({piid: req.params.piid});
+            timesheet.leaveFileLink = "https://files.podio.com/" + req.params.fileLink;      
+            const t1 = await timesheet.save();
+            res.status(200).json(true);
+          }, 20000);
+       
     
     }catch (err) {
         res.status(502).send('Error ' + err);
