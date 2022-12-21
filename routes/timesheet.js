@@ -30,7 +30,7 @@ router.post('/update/fileLink/:piid/:fileLink', async (req, res) => {
             timesheet.leaveFileLink = "https://files.podio.com/" + req.params.fileLink;      
             const t1 = await timesheet.save();
             res.status(200).json(true);
-          }, 40000);
+          }, 20000);
        
     
     }catch (err) {
