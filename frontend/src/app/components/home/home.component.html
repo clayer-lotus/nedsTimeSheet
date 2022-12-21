@@ -50,17 +50,17 @@
           <tr *ngFor="let dataHrs of dataHours; index as i">
             <th scope="row" class="text-center">{{i+1}}</th>
             <th scope="row"><a href="work-summary?name={{dataHrs._id}}&from={{startDate}}&to={{endDate}}">{{dataHrs._id}}</a></th>
-            <td class="text-center">{{dataHrs.ordinaryHour}}</td>
-            <td class="text-center">{{dataHrs.timeAndAHalf}}</td>
-            <td class="text-center">{{dataHrs.doubleTime}}</td>
-            <td class="text-center">{{dataHrs.tripleTime}}</td>
-            <td class="text-center">{{dataHrs.rdoHours}}</td>
+            <td class="text-center fw-bold">{{dataHrs.ordinaryHour}}</td>
+            <td class="text-center fw-bold">{{dataHrs.timeAndAHalf}}</td>
+            <td class="text-center fw-bold">{{dataHrs.doubleTime}}</td>
+            <td class="text-center fw-bold">{{dataHrs.tripleTime}}</td>
+            <td class="text-center fw-bold">{{dataHrs.rdoHours}}</td>
             
-            <td class="text-center">{{dataHrs.personalAndCares}}</td>
-            <td class="text-center">{{dataHrs.annualleave}}</td>
+            <td class="text-center fw-bold">{{dataHrs.personalAndCares}}</td>
+            <td class="text-center fw-bold">{{dataHrs.annualleave}}</td>
             
-            <td class="text-center">{{dataHrs.publicHoliday}}</td>
-            <td class="text-center">{{dataHrs.unpaidleave}}</td>
+            <td class="text-center fw-bold">{{dataHrs.publicHoliday}}</td>
+            <td class="text-center fw-bold">{{dataHrs.unpaidleave}}</td>
             <td><a href="work-summary?name={{dataHrs._id}}&from={{startDate}}&to={{endDate}}"><i class="fa fa-external-link" aria-hidden="true"></i></a></td>
           </tr>
 

@@ -25,6 +25,15 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    const firstTime = localStorage.getItem('key')
+    if(!firstTime){
+     localStorage.setItem('key','loaded')
+     location.reload()
+    }else {
+      localStorage.removeItem('key') 
+    }
+    
     this.getAllByHours();
 
   }
