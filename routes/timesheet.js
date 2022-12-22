@@ -51,7 +51,7 @@ router.get('/get/all/personAssigned', async (req, res) => {
                             $convert:
                             {
                                 input: "$ordinaryHours",
-                                to: "int"
+                                to: "double"
                             }
                         }
                     },
@@ -59,7 +59,7 @@ router.get('/get/all/personAssigned', async (req, res) => {
                         $sum: {
                             $convert: {
                                 input: "$timeAndHalf",
-                                to: "int"
+                                to: "double"
                             }
                         }
                     },
@@ -67,7 +67,7 @@ router.get('/get/all/personAssigned', async (req, res) => {
                         $sum: {
                             $convert: {
                                 input: "$doubleTime",
-                                to: "int"
+                                to: "double"
                             }
                         }
                     }
@@ -302,7 +302,7 @@ router.get('/get/filter/head/timesheet', async(req,res)=>{
                             $convert:
                             {
                                 input: "$ordinaryHours",
-                                to: "int"
+                                to: "double"
                             }
                         }
                     },
@@ -310,7 +310,7 @@ router.get('/get/filter/head/timesheet', async(req,res)=>{
                         $sum: {
                             $convert: {
                                 input: "$timeAndHalf",
-                                to: "int"
+                                to: "double"
                             }
                         }
                     },
@@ -318,7 +318,7 @@ router.get('/get/filter/head/timesheet', async(req,res)=>{
                         $sum: {
                             $convert: {
                                 input: "$doubleTime",
-                                to: "int"
+                                to: "double"
                             }
                         }
                     }
@@ -409,7 +409,7 @@ router.get('/get/filter/home/timesheet', async(req,res)=>{
                             $convert:
                             {
                                 input: "$ordinaryHours",
-                                to: "int"
+                                to: "double"
                             }
                         }
                     },
@@ -417,7 +417,7 @@ router.get('/get/filter/home/timesheet', async(req,res)=>{
                         $sum: {
                             $convert: {
                                 input: "$timeAndHalf",
-                                to: "int"
+                                to: "double"
                             }
                         }
                     },
@@ -425,7 +425,7 @@ router.get('/get/filter/home/timesheet', async(req,res)=>{
                         $sum: {
                             $convert: {
                                 input: "$doubleTime",
-                                to: "int"
+                                to: "double"
                             }
                         }
                     }
