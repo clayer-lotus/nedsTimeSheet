@@ -10,9 +10,10 @@ export class TimesheetService {
 
   // rootURL = "http://localhost:3000/api/timesheet";
   rootURL = "https://awful-jade-kimono.cyclic.app/api/timesheet";
-  getAllHours()
+
+  getAllHours(startDate: string, lastDate: string)
   {
-    return this.http.get(this.rootURL + '/get/all/personAssigned');
+    return this.http.get(this.rootURL + "/get/all/personAssigned?startDate=" + startDate + "&lastDate=" + lastDate);
   }
 
   getAllRDOs()

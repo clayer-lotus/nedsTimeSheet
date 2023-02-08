@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgModel } from '@angular/forms';
 import { TimesheetService } from 'src/app/services/timesheet/timesheet.service';
 // import {moment} from  'moment';
 
@@ -33,7 +34,9 @@ export class HomeComponent implements OnInit {
     }else {
       localStorage.removeItem('key') 
     }
+
     
+    this.setDefaultStartAndEndDate();
     this.getAllByHours();
 
   }
@@ -334,7 +337,11 @@ export class HomeComponent implements OnInit {
   };
 
   getAllByHours() {
-    this._timesheet.getAllHours().subscribe(
+
+  var formattedStartDate = this.startDate;
+  var formattedEndDate = this.endDate;
+
+    this._timesheet.getAllHours(formattedStartDate, formattedEndDate).subscribe(
       res => {
         this.dataHours = res;
 

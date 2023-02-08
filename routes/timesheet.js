@@ -42,7 +42,27 @@ router.post('/update/fileLink/:piid/:fileLink', async (req, res) => {
 
 router.get('/get/all/personAssigned', async (req, res) => {
     try {
+        let data = req.query;
+      
+        let startDate = data.startDate;
+        let lastDate = data.lastDate;
+
+        const convertStartUnixTodate = (startDate).concat("T00:00:00.000Z");
+        const convertEndUnixTodate = (lastDate).concat("T00:00:00.000Z");
+
+        console.log(convertStartUnixTodate);
+        console.log(convertEndUnixTodate);
+        
         const timesheet = await Timesheet.aggregate([
+            {
+                $match :{
+                    createdOn:
+                    {
+                        $gte: new Date(convertStartUnixTodate),
+                        $lte: new Date(convertEndUnixTodate)
+                    }
+                }
+            },
             {
                 $group: {
                     _id: '$personAssigned',
