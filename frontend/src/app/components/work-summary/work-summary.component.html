@@ -31,7 +31,7 @@
             <th scope="col">Other Unpaid Leave</th>
           </tr>
         </thead>
-        <tbody class="">
+        <tbody class=""  *ngIf="headTimesheetData.length != 0; else elseBlock">
           <tr class="table-warning" *ngFor="let dataHrs of headTimesheetData; index as i">
             <th scope="row" class="fs-5">{{headTimesheetData[0]._id}}</th>
             <td class="text-center fw-bold">{{headTimesheetData[0].ordinaryHour}}</td>
@@ -49,6 +49,13 @@
 
 
         </tbody>
+        <ng-template #elseBlock>
+          <tbody>
+            <tr class="text-center fs-5">
+              <td colspan="11">No data found</td>
+            </tr>
+          </tbody>
+        </ng-template>
       </table>
     </div>
   </div>
