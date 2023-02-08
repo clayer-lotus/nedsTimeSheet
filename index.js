@@ -5,8 +5,9 @@ const bodyParser = require('body-parser');
 const port  = process.env.PORT || 3000;
 
 // NEDS
-const url = 'mongodb://tesla:abc123@13.238.185.225:27017/admin';
+// const url = 'mongodb://tesla:abc123@13.238.185.225:27017/admin';
 
+const url = 'mongodb+srv://lotusbiswas:lotusbiswas@cluster0.1zfsoap.mongodb.net/nedsTimeSheet'
 const path = require('path')
 
 // Initialize express server
