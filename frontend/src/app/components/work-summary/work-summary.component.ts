@@ -24,7 +24,7 @@ export class WorkSummaryComponent implements OnInit {
   dataUnpaidLeave: any = [];
   dataPublicHoliday: any = [];
   dataPersonalCaresLeave: any = [];
-
+  isAdminOfficeAccounts:  any = "Yes";
   constructor(private route: ActivatedRoute, private _timesheet: TimesheetService) {
 
   }
@@ -49,6 +49,12 @@ export class WorkSummaryComponent implements OnInit {
       res => {
         this.timesheetData = res;
         console.log(this.timesheetData);
+        for(var i=0;i<this.timesheetData.length;i++){
+          if(this.timesheetData[i].adminOfficeAccounts == 'No'){
+            this.isAdminOfficeAccounts = 'No';
+          }
+        }
+        console.log(this.isAdminOfficeAccounts);
         this.dismantleData();
       },
       err => {
@@ -280,6 +286,23 @@ export class WorkSummaryComponent implements OnInit {
           
       this.sheetDismantleData.push(obj);
         }
+        if(this.timesheetData[i].adminOfficeAccounts == 'Yes'){
+          var obj = {
+            date : this.timesheetData[i].createdOn,
+            isLeave: "No",
+            details :[{}]
+          }
+          var job = {
+            name: this.timesheetData[i].job1,
+            workDesc: this.timesheetData[i].workDesc1 ? String(this.timesheetData[i].workDesc1).replace(/<[^>]+>/gm, '') : '',
+            timespent: this.timesheetData[i].job1TimeSpent
+          }
+
+          this.totalTimespent += Number(this.timesheetData[i].job1TimeSpent);
+
+          obj.details.push(job);
+          this.sheetDismantleData.push(obj);
+        } 
       }
       if (this.timesheetData[i].leave == "Yes") {
         var obj = {

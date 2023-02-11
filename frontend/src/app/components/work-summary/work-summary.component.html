@@ -7,6 +7,7 @@
 
         </div>
         <p class="fs-4 fw-bold">{{this.personName}}</p>
+        <p class="" *ngIf="isAdminOfficeAccounts == 'Yes'">Admin/Office/Accounts</p>
         <p class="fs-5">({{this.from}} to {{this.to}})</p>
       </div>
     </div>
@@ -59,7 +60,7 @@
       </table>
     </div>
   </div>
-  <div class="row ">
+  <div class="row" *ngIf="isAdminOfficeAccounts == 'No';else yesBlock">
     <div class="col-lg-12 team-timesheet  table-responsive  ">
       <p></p>
       <table class="table table-bordered ">
@@ -159,6 +160,102 @@
       </table>
     </div>
   </div>
+
+  <ng-template #yesBlock>
+    <div class="row" >
+      <div class="col-lg-12 team-timesheet  table-responsive  ">
+        <p></p>
+        <table class="table table-bordered ">
+          <thead class="table-dark">
+            <tr class="text-center">
+              <th scope="col" >Date</th>
+              <th scope="col" >Job</th>
+              <th scope="col" >Work Description</th>
+              <th scope="col">Time Spent</th>
+              <!-- <th scope="col" rowspan="2"><i class="fa fa-clock-o " aria-hidden="true"></i> Total Hrs</th> -->
+  
+            </tr>
+          </thead>
+          <tbody class="">
+            <ng-container *ngFor="let data of sheetDismantleData; index as i ">
+              <tr class="">
+                <td scope="row" class="fw-bold">{{sheetDismantleData[i].date | date}}</td>
+                <ng-container *ngIf="sheetDismantleData[i].isLeave == 'No'">
+                  <td>{{sheetDismantleData[i].details[1].name}}</td>
+                  
+                  <td>{{sheetDismantleData[i].details[1].workDesc}}</td>
+                  <td class="fw-bold text-center">{{sheetDismantleData[i].details[1].timespent}}</td>
+                </ng-container>
+                <ng-container *ngIf="sheetDismantleData[i].isLeave == 'Yes'">
+                  <td class="text-red">{{sheetDismantleData[i].details[1].typeOfLeave}}</td>
+                  <td  class="text-red">{{sheetDismantleData[i].details[1].leaveDetails}}</td>
+                  <td *ngIf="sheetDismantleData[i].details[1].proof !=''; else elseBlock">
+                    
+              
+                    <a href="{{sheetDismantleData[i].details[1].proof}}" class="btn btn-primary" target="_blank">Leave Document</a>
+                    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#staticBackdrop' + i" >
+                      Leave Document 
+                    </button> -->
+  
+                    <!-- Modal -->
+                    <!-- <div class="modal  fade" id="staticBackdrop{{i}}" data-bs-backdrop="static" data-bs-keyboard="false"
+                      tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <p class="modal-title fs-5" id="staticBackdropLabel">{{this.personName}} :
+                              {{sheetDismantleData[i].details[1].typeOfLeave}} ({{sheetDismantleData[i].date | date}})</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <img src= width="100%" alt="">
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div> -->
+  
+  
+                  </td>
+                  <ng-template #elseBlock>
+                    <td>
+                      <a href="#" class="btn btn-primary disabled" target="_blank">No Document</a>
+                  
+                    </td>
+                  </ng-template>
+                </ng-container>
+  
+  
+              </tr>
+  
+  
+  
+            </ng-container>
+            <tr class="table-success fs-5 fw-bold">
+              <td colspan="3">Total</td>
+              <!-- <td class="text-center">{{this.totalKms}} kms</td> -->
+              <td class="text-center">{{this.totalTimespent}} hrs</td>
+            </tr>
+  
+            <!-- 4th columm LEAVE-->
+            <!-- <tr class="table-danger">
+              <th scope="row">2022-12-04</th>
+              <td colspan="2">Sick Leave</td>
+              <td colspan="2">I am down with fever and flu because of which I will not be able to come to the office.
+              </td>
+  
+              <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  Leave Document
+                </button></td>
+            </tr> -->
+  
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-template>
 
 </section>
 
