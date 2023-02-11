@@ -6,6 +6,7 @@ const timeSheetSchema = new mongoose.Schema({
     addedWithFutureDates:{type:String},
     adminOfficeAccounts:{type:String},
     job1:{type:String},
+    workDesc1:{type:String},
     job1MaintenanceLog:{type:String},
     job1Breakdownlog:{type:String},
     job1Repairlog:{type:String},
