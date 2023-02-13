@@ -8,8 +8,8 @@ export class TimesheetService {
 
   constructor(private http: HttpClient) { }
 
-  rootURL = "http://localhost:3000/api/timesheet";
-  // rootURL = "https://awful-jade-kimono.cyclic.app/api/timesheet";
+  // rootURL = "http://localhost:3000/api/timesheet";
+  rootURL = "https://awful-jade-kimono.cyclic.app/api/timesheet";
 
   getAllHours(startDate: string, lastDate: string)
   {
