@@ -8,34 +8,34 @@ export class TimesheetService {
 
   constructor(private http: HttpClient) { }
 
-  // rootURL = "http://localhost:3000/api/timesheet";
-  rootURL = "https://awful-jade-kimono.cyclic.app/api/timesheet";
+  rootURL = "http://localhost:3000/api/timesheet";
+  // rootURL = "https://awful-jade-kimono.cyclic.app/api/timesheet";
 
   getAllHours(startDate: string, lastDate: string)
   {
     return this.http.get(this.rootURL + "/get/all/personAssigned?startDate=" + startDate + "&lastDate=" + lastDate);
   }
 
-  getAllRDOs()
+  getAllRDOs(startDate: string, lastDate: string)
   {
-    return this.http.get(this.rootURL + '/get/all/rdo');
+    return this.http.get(this.rootURL + "/get/all/rdo?startDate=" + startDate + "&lastDate=" + lastDate);
   }
-  getAllAnnualLeave()
+  getAllAnnualLeave(startDate: string, lastDate: string)
   {
-    return this.http.get(this.rootURL + '/get/all/annualleave');
+    return this.http.get(this.rootURL + "/get/all/annualleave?startDate=" + startDate + "&lastDate=" + lastDate);
   }
-  getAllUnpaidLeave()
+  getAllUnpaidLeave(startDate: string, lastDate: string)
   {
-    return this.http.get(this.rootURL + '/get/all/unpaidleave');
+    return this.http.get(this.rootURL + "/get/all/unpaidleave?startDate=" + startDate + "&lastDate=" + lastDate);
   }
-  getAllPublicHoliday()
+  getAllPublicHoliday(startDate: string, lastDate: string)
   {
-    return this.http.get(this.rootURL + '/get/all/publicholiday');
+    return this.http.get(this.rootURL + "/get/all/publicholiday?startDate=" + startDate + "&lastDate=" + lastDate);
   }
 
-  getAllPersonalCaresLeave()
+  getAllPersonalCaresLeave(startDate: string, lastDate: string)
   {
-    return this.http.get(this.rootURL + '/get/all/personalAndCaresLeave');
+    return this.http.get(this.rootURL + "/get/all/personalAndCaresLeave?startDate=" + startDate + "&lastDate=" + lastDate);
   }
 
   getFilterHeadTimesheet(startDate: string, lastDate: string, name: string)

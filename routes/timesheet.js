@@ -45,7 +45,7 @@ router.get('/get/all/personAssigned', async (req, res) => {
         let data = req.query;
       
         let startDate = data.startDate;
-        let lastDate = data.lastDate;
+        let lastDate = data.endDate;
 
         const convertStartUnixTodate = (startDate).concat("T00:00:00.000Z");
         const convertEndUnixTodate = (lastDate).concat("T00:00:00.000Z");
@@ -107,10 +107,33 @@ router.get('/get/all/personAssigned', async (req, res) => {
 
 router.get('/get/all/rdo', async (req, res) => {
     try {
+        
+        let data = req.query;
+      
+        let startDate = data.startDate;
+        let lastDate = data.lastDate;
+
+        const convertStartUnixTodate = (startDate).concat("T00:00:00.000Z");
+        const convertEndUnixTodate = (lastDate).concat("T00:00:00.000Z");
+
+        console.log(convertStartUnixTodate);
+        console.log(convertEndUnixTodate);
+
         const timesheet = await Timesheet.aggregate([
             {
-                $match: {
-                    "leaveCategory": "RDO"
+                $match :{
+                    "$and":[
+                        {
+                            createdOn:
+                            {
+                                $gte: new Date(convertStartUnixTodate),
+                                $lte: new Date(convertEndUnixTodate)
+                            }
+                        },
+                        {
+                            "leaveCategory": "RDO"
+                        }
+                    ]
                 }
             },
             {
@@ -140,10 +163,32 @@ router.get('/get/all/rdo', async (req, res) => {
 
 router.get('/get/all/sickleave', async (req, res) => {
     try {
+        let data = req.query;
+      
+        let startDate = data.startDate;
+        let lastDate = data.lastDate;
+
+        const convertStartUnixTodate = (startDate).concat("T00:00:00.000Z");
+        const convertEndUnixTodate = (lastDate).concat("T00:00:00.000Z");
+
+        console.log(convertStartUnixTodate);
+        console.log(convertEndUnixTodate);
+
         const timesheet = await Timesheet.aggregate([
             {
-                $match: {
-                    "leaveCategory": "Sick leave"
+                $match :{
+                    "$and":[
+                        {
+                            createdOn:
+                            {
+                                $gte: new Date(convertStartUnixTodate),
+                                $lte: new Date(convertEndUnixTodate)
+                            }
+                        },
+                        {
+                            "leaveCategory": "Sick leave"
+                        }
+                    ]
                 }
             },
             {
@@ -166,10 +211,32 @@ router.get('/get/all/sickleave', async (req, res) => {
 
 router.get('/get/all/unpaidleave', async (req, res) => {
     try {
+        let data = req.query;
+      
+        let startDate = data.startDate;
+        let lastDate = data.lastDate;
+
+        const convertStartUnixTodate = (startDate).concat("T00:00:00.000Z");
+        const convertEndUnixTodate = (lastDate).concat("T00:00:00.000Z");
+
+        console.log(convertStartUnixTodate);
+        console.log(convertEndUnixTodate);
+
         const timesheet = await Timesheet.aggregate([
             {
-                $match: {
-                    "leaveCategory": "Unpaid leave"
+                $match :{
+                    "$and":[
+                        {
+                            createdOn:
+                            {
+                                $gte: new Date(convertStartUnixTodate),
+                                $lte: new Date(convertEndUnixTodate)
+                            }
+                        },
+                        {
+                            "leaveCategory": "Unpaid leave"
+                        }
+                    ]
                 }
             },
             {
@@ -192,10 +259,32 @@ router.get('/get/all/unpaidleave', async (req, res) => {
 
 router.get('/get/all/annualleave', async (req, res) => {
     try {
+        let data = req.query;
+      
+        let startDate = data.startDate;
+        let lastDate = data.lastDate;
+
+        const convertStartUnixTodate = (startDate).concat("T00:00:00.000Z");
+        const convertEndUnixTodate = (lastDate).concat("T00:00:00.000Z");
+
+        console.log(convertStartUnixTodate);
+        console.log(convertEndUnixTodate);
+
         const timesheet = await Timesheet.aggregate([
             {
-                $match: {
-                    "leaveCategory": "Annual leave"
+                $match :{
+                    "$and":[
+                        {
+                            createdOn:
+                            {
+                                $gte: new Date(convertStartUnixTodate),
+                                $lte: new Date(convertEndUnixTodate)
+                            }
+                        },
+                        {
+                            "leaveCategory": "Annual leave"
+                        }
+                    ]
                 }
             },
             {
@@ -218,10 +307,33 @@ router.get('/get/all/annualleave', async (req, res) => {
 
 router.get('/get/all/publicholiday', async (req, res) => {
     try {
+
+        let data = req.query;
+      
+        let startDate = data.startDate;
+        let lastDate = data.lastDate;
+
+        const convertStartUnixTodate = (startDate).concat("T00:00:00.000Z");
+        const convertEndUnixTodate = (lastDate).concat("T00:00:00.000Z");
+
+        console.log(convertStartUnixTodate);
+        console.log(convertEndUnixTodate);
+
         const timesheet = await Timesheet.aggregate([
             {
-                $match: {
-                    "leaveCategory": "Public holiday"
+                $match :{
+                    "$and":[
+                        {
+                            createdOn:
+                            {
+                                $gte: new Date(convertStartUnixTodate),
+                                $lte: new Date(convertEndUnixTodate)
+                            }
+                        },
+                        {
+                            "leaveCategory": "Public holiday"
+                        }
+                    ]
                 }
             },
             {
@@ -255,9 +367,31 @@ router.get('/get/all/publicholiday', async (req, res) => {
 
 router.get('/get/all/personalAndCaresLeave', async (req, res) => {
     try {
+        let data = req.query;
+      
+        let startDate = data.startDate;
+        let lastDate = data.lastDate;
+
+        const convertStartUnixTodate = (startDate).concat("T00:00:00.000Z");
+        const convertEndUnixTodate = (lastDate).concat("T00:00:00.000Z");
+
+        console.log(convertStartUnixTodate);
+        console.log(convertEndUnixTodate);
+
         const timesheet = await Timesheet.aggregate([
             {
-                $match: { $or: [{ "leaveCategory": "Personal leave" }, { "leaveCategory": "Carers leave" }] }
+                $match :{
+                    "$and":[
+                        {
+                            createdOn:
+                            {
+                                $gte: new Date(convertStartUnixTodate),
+                                $lte: new Date(convertEndUnixTodate)
+                            }
+                        },
+                        { $or: [{ "leaveCategory": "Personal leave" }, { "leaveCategory": "Carers leave" }] }
+                    ]
+                }
             },
             {
                 $group: {

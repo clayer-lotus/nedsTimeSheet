@@ -81,7 +81,7 @@ export class WorkSummaryComponent implements OnInit {
         }
 
          // GET ALL RDOS
-         this._timesheet.getAllRDOs().subscribe(
+         this._timesheet.getAllRDOs(this.from, this.to).subscribe(
           res => {
             this.dataRDOs = res;
             for (var i = 0; i < this.dataRDOs.length; i++) {
@@ -99,7 +99,7 @@ export class WorkSummaryComponent implements OnInit {
           }
         )
         // GET ALL ANNUUAL Leave
-        this._timesheet.getAllAnnualLeave().subscribe(
+        this._timesheet.getAllAnnualLeave(this.from, this.to).subscribe(
           res => {
             this.dataAnnualLeave = res;
             for (var i = 0; i < this.dataAnnualLeave.length; i++) {
@@ -118,7 +118,7 @@ export class WorkSummaryComponent implements OnInit {
         )
 
         // GET ALL UNPAID Leave
-        this._timesheet.getAllUnpaidLeave().subscribe(
+        this._timesheet.getAllUnpaidLeave(this.from, this.to).subscribe(
           res => {
             this.dataUnpaidLeave = res;
 
@@ -138,7 +138,7 @@ export class WorkSummaryComponent implements OnInit {
         )
 
         // GET ALL PUBLIC HOLDIAY 
-        this._timesheet.getAllPublicHoliday().subscribe(
+        this._timesheet.getAllPublicHoliday(this.from, this.to).subscribe(
           res => {
             this.dataPublicHoliday = res;
             for (var i = 0; i < this.dataPublicHoliday.length; i++) {
@@ -159,7 +159,7 @@ export class WorkSummaryComponent implements OnInit {
         )
 
         // GET ALL PERSONAL/CARES LEAVE
-        this._timesheet.getAllPersonalCaresLeave().subscribe(
+        this._timesheet.getAllPersonalCaresLeave(this.from, this.to).subscribe(
           res => {
             this.dataPersonalCaresLeave = res;
             for (var i = 0; i < this.dataPersonalCaresLeave.length; i++) {

@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   dataAnnualLeave: any = [];
   dataUnpaidLeave: any = [];
   dataPublicHoliday: any = [];
-  startDate !: string;
+  startDate !: string ;
   endDate !: string;
   // dataTripleTime: any = [];
   dataPersonalCaresLeave: any = [];
@@ -35,13 +35,6 @@ export class HomeComponent implements OnInit {
       localStorage.removeItem('key') 
     }
 
-    
-    this.setDefaultStartAndEndDate();
-    this.getAllByHours();
-
-  }
-
-  setDefaultStartAndEndDate() {
     const today = new Date();
 
     const firstDay = new Date(today.setDate(today.getDate() - today.getDay()));
@@ -65,6 +58,14 @@ export class HomeComponent implements OnInit {
     this.endDate = formattedEndDate;
     
     console.log(this.endDate); 
+    
+    this.setDefaultStartAndEndDate();
+    this.getAllByHours();
+
+  }
+
+  setDefaultStartAndEndDate() {
+  
 
     this._timesheet.getFilterHomeTimesheet(this.startDate, this.endDate).subscribe(
       res => {
@@ -82,7 +83,7 @@ export class HomeComponent implements OnInit {
         // console.log(this.dataHours);
 
         // GET ALL RDOS
-        this._timesheet.getAllRDOs().subscribe(
+        this._timesheet.getAllRDOs(this.startDate, this.endDate).subscribe(
           res => {
             this.dataRDOs = res;
             for (var i = 0; i < this.dataRDOs.length; i++) {
@@ -100,7 +101,7 @@ export class HomeComponent implements OnInit {
           }
         )
         // GET ALL ANNUUAL Leave
-        this._timesheet.getAllAnnualLeave().subscribe(
+        this._timesheet.getAllAnnualLeave(this.startDate, this.endDate).subscribe(
           res => {
             this.dataAnnualLeave = res;
             for (var i = 0; i < this.dataAnnualLeave.length; i++) {
@@ -119,7 +120,7 @@ export class HomeComponent implements OnInit {
         )
 
         // GET ALL UNPAID Leave
-        this._timesheet.getAllUnpaidLeave().subscribe(
+        this._timesheet.getAllUnpaidLeave(this.startDate, this.endDate).subscribe(
           res => {
             this.dataUnpaidLeave = res;
 
@@ -139,9 +140,11 @@ export class HomeComponent implements OnInit {
         )
 
         // GET ALL PUBLIC HOLDIAY 
-        this._timesheet.getAllPublicHoliday().subscribe(
+        this._timesheet.getAllPublicHoliday(this.startDate, this.endDate).subscribe(
           res => {
             this.dataPublicHoliday = res;
+            console.log(this.startDate + " "+ this.endDate);
+            console.log(this.dataPublicHoliday);
             for (var i = 0; i < this.dataPublicHoliday.length; i++) {
               for (var j = 0; j < this.dataHours.length; j++) {
                 if (this.dataPublicHoliday[i]._id == this.dataHours[j]._id) {
@@ -159,7 +162,7 @@ export class HomeComponent implements OnInit {
         )
 
         // GET ALL PERSONAL/CARES LEAVE
-        this._timesheet.getAllPersonalCaresLeave().subscribe(
+        this._timesheet.getAllPersonalCaresLeave(this.startDate, this.endDate).subscribe(
           res => {
             this.dataPersonalCaresLeave = res;
             for (var i = 0; i < this.dataPersonalCaresLeave.length; i++) {
@@ -229,7 +232,7 @@ export class HomeComponent implements OnInit {
         // console.log(this.dataHours);
 
         // GET ALL RDOS
-        this._timesheet.getAllRDOs().subscribe(
+        this._timesheet.getAllRDOs(this.startDate, this.endDate).subscribe(
           res => {
             this.dataRDOs = res;
             for (var i = 0; i < this.dataRDOs.length; i++) {
@@ -247,7 +250,7 @@ export class HomeComponent implements OnInit {
           }
         )
         // GET ALL ANNUUAL Leave
-        this._timesheet.getAllAnnualLeave().subscribe(
+        this._timesheet.getAllAnnualLeave(this.startDate, this.endDate).subscribe(
           res => {
             this.dataAnnualLeave = res;
             for (var i = 0; i < this.dataAnnualLeave.length; i++) {
@@ -266,7 +269,7 @@ export class HomeComponent implements OnInit {
         )
 
         // GET ALL UNPAID Leave
-        this._timesheet.getAllUnpaidLeave().subscribe(
+        this._timesheet.getAllUnpaidLeave(this.startDate, this.endDate).subscribe(
           res => {
             this.dataUnpaidLeave = res;
 
@@ -286,7 +289,7 @@ export class HomeComponent implements OnInit {
         )
 
         // GET ALL PUBLIC HOLDIAY 
-        this._timesheet.getAllPublicHoliday().subscribe(
+        this._timesheet.getAllPublicHoliday(this.startDate, this.endDate).subscribe(
           res => {
             this.dataPublicHoliday = res;
             for (var i = 0; i < this.dataPublicHoliday.length; i++) {
@@ -306,7 +309,7 @@ export class HomeComponent implements OnInit {
         )
 
         // GET ALL PERSONAL/CARES LEAVE
-        this._timesheet.getAllPersonalCaresLeave().subscribe(
+        this._timesheet.getAllPersonalCaresLeave(this.startDate, this.endDate).subscribe(
           res => {
             this.dataPersonalCaresLeave = res;
             for (var i = 0; i < this.dataPersonalCaresLeave.length; i++) {
@@ -356,7 +359,7 @@ export class HomeComponent implements OnInit {
         // console.log(this.dataHours);
 
         // GET ALL RDOS
-        this._timesheet.getAllRDOs().subscribe(
+        this._timesheet.getAllRDOs(this.startDate, this.endDate).subscribe(
           res => {
             this.dataRDOs = res;
             for (var i = 0; i < this.dataRDOs.length; i++) {
@@ -374,7 +377,7 @@ export class HomeComponent implements OnInit {
           }
         )
         // GET ALL ANNUUAL Leave
-        this._timesheet.getAllAnnualLeave().subscribe(
+        this._timesheet.getAllAnnualLeave(this.startDate, this.endDate).subscribe(
           res => {
             this.dataAnnualLeave = res;
             for (var i = 0; i < this.dataAnnualLeave.length; i++) {
@@ -393,7 +396,7 @@ export class HomeComponent implements OnInit {
         )
 
         // GET ALL UNPAID Leave
-        this._timesheet.getAllUnpaidLeave().subscribe(
+        this._timesheet.getAllUnpaidLeave(this.startDate, this.endDate).subscribe(
           res => {
             this.dataUnpaidLeave = res;
 
@@ -413,7 +416,7 @@ export class HomeComponent implements OnInit {
         )
 
         // GET ALL PUBLIC HOLDIAY 
-        this._timesheet.getAllPublicHoliday().subscribe(
+        this._timesheet.getAllPublicHoliday(this.startDate, this.endDate).subscribe(
           res => {
             this.dataPublicHoliday = res;
             for (var i = 0; i < this.dataPublicHoliday.length; i++) {
@@ -433,7 +436,7 @@ export class HomeComponent implements OnInit {
         )
 
         // GET ALL PERSONAL/CARES LEAVE
-        this._timesheet.getAllPersonalCaresLeave().subscribe(
+        this._timesheet.getAllPersonalCaresLeave(this.startDate, this.endDate).subscribe(
           res => {
             this.dataPersonalCaresLeave = res;
             for (var i = 0; i < this.dataPersonalCaresLeave.length; i++) {
