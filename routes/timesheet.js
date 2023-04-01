@@ -2,7 +2,14 @@ const express = require('express');
 const timesheet = require('../models/timesheet');
 const router = express.Router();
 
-const Timesheet = require('../models/timesheet');
+const Timesheet = require('../models/timesheet');;
+var credentials = {
+    app_id: '28016925',
+    app_token: '4997c3dd5c75f7ca37c900d2f2a4d9e4',
+    client_id: 'teslalifts',
+    client_secret: 'bf3dgnFsHCW4Kk2pugnRJOilyKgxSSCgbTwUBbHmHTH9TTXjbBPtG6aPYqwJAweo'
+};
+var nodio = require('nodio')(credentials);
 
 // CREATE TIMESHEET
 router.post('/', async (req, res) => {
@@ -21,19 +28,31 @@ router.post('/', async (req, res) => {
 });
 
 // UPDATE FILE LINK
-router.post('/update/fileLink/:piid/:fileLink', async (req, res) => {
-    try{
-
+router.post('/update/fileLink/:piid', async (req, res) => {
+    try {
         setTimeout(async function() {
             console.log(req.params.piid);
+
+            var item_id  = req.params.piid;
             const timesheet = await Timesheet.findOne({piid: req.params.piid});
-            timesheet.leaveFileLink = "https://files.podio.com/" + req.params.fileLink;      
-            const t1 = await timesheet.save();
-            res.status(200).json(true);
+            nodio.getItem(item_id, async function (err, item_info) {
+                if(err){
+                    // Error
+                    console.log(err);
+                }
+                else{
+                    // Item retrieved successfully
+                   
+                    timesheet.leaveFileLink = item_info.files[0].link;      
+                    const t1 = await timesheet.save();
+                    res.status(200).json(true);
+                }
+            });
+           
           }, 20000);
-       
-    
-    }catch (err) {
+
+
+    } catch (err) {
         res.status(502).send('Error ' + err);
     }
 });
@@ -43,7 +62,7 @@ router.post('/update/fileLink/:piid/:fileLink', async (req, res) => {
 router.get('/get/all/personAssigned', async (req, res) => {
     try {
         let data = req.query;
-      
+
         let startDate = data.startDate;
         let lastDate = data.endDate;
 
@@ -52,12 +71,10 @@ router.get('/get/all/personAssigned', async (req, res) => {
 
         console.log(convertStartUnixTodate);
         console.log(convertEndUnixTodate);
-        
-        const timesheet = await Timesheet.aggregate([
-            {
-                $match :{
-                    createdOn:
-                    {
+
+        const timesheet = await Timesheet.aggregate([{
+                $match: {
+                    createdOn: {
                         $gte: new Date(convertStartUnixTodate),
                         $lte: new Date(convertEndUnixTodate)
                     }
@@ -68,8 +85,7 @@ router.get('/get/all/personAssigned', async (req, res) => {
                     _id: '$personAssigned',
                     ordinaryHour: {
                         $sum: {
-                            $convert:
-                            {
+                            $convert: {
                                 input: "$ordinaryHours",
                                 to: "double"
                             }
@@ -93,7 +109,11 @@ router.get('/get/all/personAssigned', async (req, res) => {
                     }
                 }
             },
-            { $sort : { _id : 1 } }
+            {
+                $sort: {
+                    _id: 1
+                }
+            }
         ])
 
         res.json(timesheet);
@@ -107,9 +127,9 @@ router.get('/get/all/personAssigned', async (req, res) => {
 
 router.get('/get/all/rdo', async (req, res) => {
     try {
-        
+
         let data = req.query;
-      
+
         let startDate = data.startDate;
         let lastDate = data.lastDate;
 
@@ -119,13 +139,10 @@ router.get('/get/all/rdo', async (req, res) => {
         console.log(convertStartUnixTodate);
         console.log(convertEndUnixTodate);
 
-        const timesheet = await Timesheet.aggregate([
-            {
-                $match :{
-                    "$and":[
-                        {
-                            createdOn:
-                            {
+        const timesheet = await Timesheet.aggregate([{
+                $match: {
+                    "$and": [{
+                            createdOn: {
                                 $gte: new Date(convertStartUnixTodate),
                                 $lte: new Date(convertEndUnixTodate)
                             }
@@ -151,7 +168,7 @@ router.get('/get/all/rdo', async (req, res) => {
             }
         ])
 
-        
+
         res.json(timesheet);
         console.log("Timesheet " + timesheet);
     } catch (err) {
@@ -164,7 +181,7 @@ router.get('/get/all/rdo', async (req, res) => {
 router.get('/get/all/sickleave', async (req, res) => {
     try {
         let data = req.query;
-      
+
         let startDate = data.startDate;
         let lastDate = data.lastDate;
 
@@ -174,13 +191,10 @@ router.get('/get/all/sickleave', async (req, res) => {
         console.log(convertStartUnixTodate);
         console.log(convertEndUnixTodate);
 
-        const timesheet = await Timesheet.aggregate([
-            {
-                $match :{
-                    "$and":[
-                        {
-                            createdOn:
-                            {
+        const timesheet = await Timesheet.aggregate([{
+                $match: {
+                    "$and": [{
+                            createdOn: {
                                 $gte: new Date(convertStartUnixTodate),
                                 $lte: new Date(convertEndUnixTodate)
                             }
@@ -194,12 +208,14 @@ router.get('/get/all/sickleave', async (req, res) => {
             {
                 $group: {
                     _id: "$personAssigned",
-                    total: { $sum: 1 }
+                    total: {
+                        $sum: 1
+                    }
                 }
             }
         ])
 
-        
+
         res.json(timesheet);
         console.log("Timesheet " + timesheet);
     } catch (err) {
@@ -212,7 +228,7 @@ router.get('/get/all/sickleave', async (req, res) => {
 router.get('/get/all/unpaidleave', async (req, res) => {
     try {
         let data = req.query;
-      
+
         let startDate = data.startDate;
         let lastDate = data.lastDate;
 
@@ -222,13 +238,10 @@ router.get('/get/all/unpaidleave', async (req, res) => {
         console.log(convertStartUnixTodate);
         console.log(convertEndUnixTodate);
 
-        const timesheet = await Timesheet.aggregate([
-            {
-                $match :{
-                    "$and":[
-                        {
-                            createdOn:
-                            {
+        const timesheet = await Timesheet.aggregate([{
+                $match: {
+                    "$and": [{
+                            createdOn: {
                                 $gte: new Date(convertStartUnixTodate),
                                 $lte: new Date(convertEndUnixTodate)
                             }
@@ -242,12 +255,14 @@ router.get('/get/all/unpaidleave', async (req, res) => {
             {
                 $group: {
                     _id: "$personAssigned",
-                    total: { $sum: 1 }
+                    total: {
+                        $sum: 1
+                    }
                 }
             }
         ])
 
-        
+
         res.json(timesheet);
         console.log("Timesheet " + timesheet);
     } catch (err) {
@@ -260,7 +275,7 @@ router.get('/get/all/unpaidleave', async (req, res) => {
 router.get('/get/all/annualleave', async (req, res) => {
     try {
         let data = req.query;
-      
+
         let startDate = data.startDate;
         let lastDate = data.lastDate;
 
@@ -270,13 +285,10 @@ router.get('/get/all/annualleave', async (req, res) => {
         console.log(convertStartUnixTodate);
         console.log(convertEndUnixTodate);
 
-        const timesheet = await Timesheet.aggregate([
-            {
-                $match :{
-                    "$and":[
-                        {
-                            createdOn:
-                            {
+        const timesheet = await Timesheet.aggregate([{
+                $match: {
+                    "$and": [{
+                            createdOn: {
                                 $gte: new Date(convertStartUnixTodate),
                                 $lte: new Date(convertEndUnixTodate)
                             }
@@ -290,12 +302,14 @@ router.get('/get/all/annualleave', async (req, res) => {
             {
                 $group: {
                     _id: "$personAssigned",
-                    total: { $sum: 1 }
+                    total: {
+                        $sum: 1
+                    }
                 }
             }
         ])
 
-        
+
         res.json(timesheet);
         console.log("Timesheet " + timesheet);
     } catch (err) {
@@ -309,7 +323,7 @@ router.get('/get/all/publicholiday', async (req, res) => {
     try {
 
         let data = req.query;
-      
+
         let startDate = data.startDate;
         let lastDate = data.lastDate;
 
@@ -319,13 +333,10 @@ router.get('/get/all/publicholiday', async (req, res) => {
         console.log(convertStartUnixTodate);
         console.log(convertEndUnixTodate);
 
-        const timesheet = await Timesheet.aggregate([
-            {
-                $match :{
-                    "$and":[
-                        {
-                            createdOn:
-                            {
+        const timesheet = await Timesheet.aggregate([{
+                $match: {
+                    "$and": [{
+                            createdOn: {
                                 $gte: new Date(convertStartUnixTodate),
                                 $lte: new Date(convertEndUnixTodate)
                             }
@@ -339,20 +350,19 @@ router.get('/get/all/publicholiday', async (req, res) => {
             {
                 $group: {
                     _id: "$personAssigned",
-                    total: { $sum: 1 }
+                    total: {
+                        $sum: 1
+                    }
                 }
             }
         ])
 
         if (timesheet.length == 0) {
-            res.json([
-                {
-                    "_id": "Empty",
-                    "total": 0
-                }
-            ]);
-        }
-        else {
+            res.json([{
+                "_id": "Empty",
+                "total": 0
+            }]);
+        } else {
             res.json(timesheet);
         }
         res.json(timesheet);
@@ -368,7 +378,7 @@ router.get('/get/all/publicholiday', async (req, res) => {
 router.get('/get/all/personalAndCaresLeave', async (req, res) => {
     try {
         let data = req.query;
-      
+
         let startDate = data.startDate;
         let lastDate = data.lastDate;
 
@@ -378,38 +388,40 @@ router.get('/get/all/personalAndCaresLeave', async (req, res) => {
         console.log(convertStartUnixTodate);
         console.log(convertEndUnixTodate);
 
-        const timesheet = await Timesheet.aggregate([
-            {
-                $match :{
-                    "$and":[
-                        {
-                            createdOn:
-                            {
+        const timesheet = await Timesheet.aggregate([{
+                $match: {
+                    "$and": [{
+                            createdOn: {
                                 $gte: new Date(convertStartUnixTodate),
                                 $lte: new Date(convertEndUnixTodate)
                             }
                         },
-                        { $or: [{ "leaveCategory": "Personal leave" }, { "leaveCategory": "Carers leave" }] }
+                        {
+                            $or: [{
+                                "leaveCategory": "Personal leave"
+                            }, {
+                                "leaveCategory": "Carers leave"
+                            }]
+                        }
                     ]
                 }
             },
             {
                 $group: {
                     _id: "$personAssigned",
-                    total: { $sum: 1 }
+                    total: {
+                        $sum: 1
+                    }
                 }
             }
         ])
 
         if (timesheet.length == 0) {
-            res.json([
-                {
-                    "_id": "Empty",
-                    "total": 0
-                }
-            ]);
-        }
-        else {
+            res.json([{
+                "_id": "Empty",
+                "total": 0
+            }]);
+        } else {
             res.json(timesheet);
         }
         res.json(timesheet);
@@ -423,10 +435,10 @@ router.get('/get/all/personalAndCaresLeave', async (req, res) => {
 
 // // GET ALL TIMESHEET HEAD REPORT DETILS FILTER BY DATE & NAME
 
-router.get('/get/filter/head/timesheet', async(req,res)=>{
-    try{
+router.get('/get/filter/head/timesheet', async (req, res) => {
+    try {
         let data = req.query;
-        let personName =data.name;
+        let personName = data.name;
         let startDate = data.startDate;
         let lastDate = data.lastDate;
 
@@ -435,26 +447,23 @@ router.get('/get/filter/head/timesheet', async(req,res)=>{
 
         console.log(convertStartUnixTodate);
         console.log(convertEndUnixTodate);
-        
-        const timesheet = await Timesheet.aggregate([
-            {
-                $match :{
+
+        const timesheet = await Timesheet.aggregate([{
+                $match: {
                     "personAssigned": personName,
-                    createdOn:
-                    {
+                    createdOn: {
                         $gte: new Date(convertStartUnixTodate),
                         $lte: new Date(convertEndUnixTodate)
                     }
                 }
             },
             {
-                
+
                 $group: {
                     _id: '$personAssigned',
                     ordinaryHour: {
                         $sum: {
-                            $convert:
-                            {
+                            $convert: {
                                 input: "$ordinaryHours",
                                 to: "double"
                             }
@@ -482,8 +491,7 @@ router.get('/get/filter/head/timesheet', async(req,res)=>{
 
         res.json(timesheet);
         console.log("Timesheet " + timesheet);
-    }catch(err)
-    {
+    } catch (err) {
         res.sendStatus(400);
         console.log('Error ' + err);
     }
@@ -492,10 +500,10 @@ router.get('/get/filter/head/timesheet', async(req,res)=>{
 
 // GET ALL TIMESHEET REPORT DETILS FILTER BY DATE & NAME
 
-router.get('/get/filter/timesheet', async(req,res)=>{
-    try{
+router.get('/get/filter/timesheet', async (req, res) => {
+    try {
         let data = req.query;
-        let personName =data.name;
+        let personName = data.name;
         let startDate = data.startDate;
         let lastDate = data.lastDate;
 
@@ -504,25 +512,26 @@ router.get('/get/filter/timesheet', async(req,res)=>{
 
         console.log(convertStartUnixTodate);
         console.log(convertEndUnixTodate);
-        
-        const timesheet = await Timesheet.aggregate([
-            {
-                $match :{
+
+        const timesheet = await Timesheet.aggregate([{
+                $match: {
                     "personAssigned": personName,
-                    createdOn:
-                    {
+                    createdOn: {
                         $gte: new Date(convertStartUnixTodate),
                         $lte: new Date(convertEndUnixTodate)
                     }
                 }
             },
-            { $sort: { createdOn : 1 } } 
+            {
+                $sort: {
+                    createdOn: 1
+                }
+            }
         ])
 
         res.json(timesheet);
         console.log("Timesheet " + timesheet);
-    }catch(err)
-    {
+    } catch (err) {
         res.sendStatus(400);
         console.log('Error ' + err);
     }
@@ -532,8 +541,8 @@ router.get('/get/filter/timesheet', async(req,res)=>{
 
 // // GET ALL TIMESHEET HEAD REPORT DETILS FILTER BY DATE & NAME
 
-router.get('/get/filter/home/timesheet', async(req,res)=>{
-    try{
+router.get('/get/filter/home/timesheet', async (req, res) => {
+    try {
         let data = req.query;
         let startDate = data.startDate;
         let lastDate = data.lastDate;
@@ -543,25 +552,22 @@ router.get('/get/filter/home/timesheet', async(req,res)=>{
 
         console.log(convertStartUnixTodate);
         console.log(convertEndUnixTodate);
-        
-        const timesheet = await Timesheet.aggregate([
-            {
-                $match :{
-                    createdOn:
-                    {
+
+        const timesheet = await Timesheet.aggregate([{
+                $match: {
+                    createdOn: {
                         $gte: new Date(convertStartUnixTodate),
                         $lte: new Date(convertEndUnixTodate)
                     }
                 }
             },
             {
-                
+
                 $group: {
                     _id: '$personAssigned',
                     ordinaryHour: {
                         $sum: {
-                            $convert:
-                            {
+                            $convert: {
                                 input: "$ordinaryHours",
                                 to: "double"
                             }
@@ -585,13 +591,16 @@ router.get('/get/filter/home/timesheet', async(req,res)=>{
                     }
                 }
             },
-            { $sort: { _id : 1 } } 
+            {
+                $sort: {
+                    _id: 1
+                }
+            }
         ])
 
         res.json(timesheet);
         console.log("Timesheet " + timesheet);
-    }catch(err)
-    {
+    } catch (err) {
         res.sendStatus(400);
         console.log('Error ' + err);
     }
