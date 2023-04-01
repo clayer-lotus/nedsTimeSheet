@@ -190,7 +190,7 @@ export class WorkSummaryComponent implements OnInit {
     for (var i = 0; i < this.timesheetData.length; i++) {
       
       if (this.timesheetData[i].leave == "No") {
-        if (this.timesheetData[i].job1DistanceFrom == "" && this.timesheetData[i].job1DistanceTo != "") {
+        if (this.timesheetData[i].job1DistanceFrom != '' && this.timesheetData[i].job1DistanceTo != '') {
 
           var obj = {
             date : this.timesheetData[i].createdOn,
