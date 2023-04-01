@@ -86,14 +86,14 @@
             <tr class="">
               <td scope="row" class="fw-bold">{{sheetDismantleData[i].date | date}}</td>
               <ng-container *ngIf="sheetDismantleData[i].isLeave == 'No'">
-                <td>{{sheetDismantleData[i].details[1].from}}</td>
-                <td>{{sheetDismantleData[i].details[1].to}}</td>
+                <td>{{sheetDismantleData[i].details[1].from == "" ? 'Nil' : sheetDismantleData[i].details[1].from}}</td>
+                <td>{{sheetDismantleData[i].details[1].to == "" ? 'Nil' : sheetDismantleData[i].details[1].to}}</td>
                 <td class="fw-bold text-center">{{sheetDismantleData[i].details[1].kms}}</td>
                 <td class="fw-bold text-center">{{sheetDismantleData[i].details[1].timespent}}</td>
               </ng-container>
               <ng-container *ngIf="sheetDismantleData[i].isLeave == 'Yes'">
-                <td colspan="1" class="text-red">{{sheetDismantleData[i].details[1].typeOfLeave}}</td>
-                <td colspan="2" class="text-red">{{sheetDismantleData[i].details[1].leaveDetails}}</td>
+                <td colspan="1" class="text-red">{{sheetDismantleData[i].details[1].typeOfLeave  == "" ? 'Nil' : sheetDismantleData[i].details[1].typeOfLeave}}</td>
+                <td colspan="2" class="text-red">{{sheetDismantleData[i].details[1].leaveDetails == "" ? 'Nil' : sheetDismantleData[i].details[1].leaveDetails}}</td>
                 <td *ngIf="sheetDismantleData[i].details[1].proof !=''; else elseBlock">
                   
             
@@ -187,8 +187,9 @@
                   <td class="fw-bold text-center">{{sheetDismantleData[i].details[1].timespent}}</td>
                 </ng-container>
                 <ng-container *ngIf="sheetDismantleData[i].isLeave == 'Yes'">
-                  <td class="text-red">{{sheetDismantleData[i].details[1].typeOfLeave}}</td>
-                  <td  class="text-red">{{sheetDismantleData[i].details[1].leaveDetails}}</td>
+                  <td class="text-red">{{sheetDismantleData[i].details[1].typeOfLeave  == "" ? 'Nil' : sheetDismantleData[i].details[1].typeOfLeave}}</td>
+                  
+                  <td  class="text-red">{{sheetDismantleData[i].details[1].leaveDetails  == "" ? 'Nil' : sheetDismantleData[i].details[1].leaveDetails}}</td>
                   <td *ngIf="sheetDismantleData[i].details[1].proof !=''; else elseBlock">
                     
               

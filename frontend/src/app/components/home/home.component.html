@@ -51,7 +51,7 @@
           <tr *ngFor="let dataHrs of dataHours; index as i">
             <th scope="row" class="text-center">{{i+1}}</th>
             <th scope="row"><a
-                href="work-summary?name={{dataHrs._id}}&from={{startDate}}&to={{endDate}}">{{dataHrs._id}}</a></th>
+                href="work-summary?name={{dataHrs._id}}&from={{startDate}}&to={{endDate}}" target="_blank">{{dataHrs._id}}</a></th>
             <td class="text-center fw-bold">{{dataHrs.ordinaryHour}}</td>
             <td class="text-center fw-bold">{{dataHrs.timeAndAHalf}}</td>
             <td class="text-center fw-bold">{{dataHrs.doubleTime}}</td>
@@ -63,7 +63,7 @@
 
             <td class="text-center fw-bold">{{dataHrs.publicHoliday}}</td>
             <td class="text-center fw-bold">{{dataHrs.unpaidleave}}</td>
-            <td><a href="work-summary?name={{dataHrs._id}}&from={{startDate}}&to={{endDate}}"><i
+            <td><a href="work-summary?name={{dataHrs._id}}&from={{startDate}}&to={{endDate}}" target="_blank"><i
                   class="fa fa-external-link" aria-hidden="true"></i></a></td>
           </tr>
 
