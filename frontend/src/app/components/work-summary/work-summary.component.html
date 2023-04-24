@@ -107,7 +107,7 @@
                 <td ><span class="badge bg-danger">Leave</span></td>
                 <td colspan="1" class="text-red">{{sheetDismantleData[i].details[1].typeOfLeave  == "" ? 'Nil' : sheetDismantleData[i].details[1].typeOfLeave}}</td>
                 <td colspan="2" class="text-red">{{sheetDismantleData[i].details[1].leaveDetails == "" ? 'Nil' : sheetDismantleData[i].details[1].leaveDetails}}</td>
-                <td *ngIf="sheetDismantleData[i].details[1].proof !=''; else elseBlock">
+                <td class="text-center" *ngIf="sheetDismantleData[i].details[1].proof !=''; else elseBlock">
                   
             
                   <a href="{{sheetDismantleData[i].details[1].proof}}" class="btn btn-primary" target="_blank">Leave Document</a>
@@ -205,7 +205,7 @@
                   <td class="text-red">{{sheetDismantleData[i].details[1].typeOfLeave  == "" ? 'Nil' : sheetDismantleData[i].details[1].typeOfLeave}}</td>
                   
                   <td  class="text-red">{{sheetDismantleData[i].details[1].leaveDetails  == "" ? 'Nil' : sheetDismantleData[i].details[1].leaveDetails}}</td>
-                  <td *ngIf="sheetDismantleData[i].details[1].proof !=''; else elseBlock">
+                  <td colspan="2" class="text-center" *ngIf="sheetDismantleData[i].details[1].proof !=''; else elseBlock">
                     
               
                     <a href="{{sheetDismantleData[i].details[1].proof}}" class="btn btn-primary" target="_blank">Leave Document</a>
