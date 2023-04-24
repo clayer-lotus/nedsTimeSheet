@@ -27,6 +27,23 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.put('/update/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const newData = req.body;
+    
+        Timesheet.updateOne({ _id: ObjectId(id) }, { $set: newData }, (err, result) => {
+            if (err) throw err;
+      
+            res.json(result);
+          });
+
+    } catch (err) {
+        res.sendStatus(400);
+        console.log('Error ' + err);
+    }
+});
+
 // UPDATE FILE LINK
 router.post('/update/fileLink/:piid', async (req, res) => {
     try {
