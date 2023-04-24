@@ -67,6 +67,7 @@
         <thead class="table-dark">
           <tr class="text-center">
             <th scope="col" rowspan="2">Date</th>
+            <th scope="col" rowspan="2">Category</th>
             <th scope="col" colspan="2">Location</th>
             <th scope="col" rowspan="2">Kms</th>
             <th scope="col" rowspan="2">Time Spent</th>
@@ -85,13 +86,25 @@
           <ng-container *ngFor="let data of sheetDismantleData; index as i ">
             <tr class="">
               <td scope="row" class="fw-bold">{{sheetDismantleData[i].date | date}}</td>
-              <ng-container *ngIf="sheetDismantleData[i].isLeave == 'No'">
+              <ng-container *ngIf="sheetDismantleData[i].isLeave == 'No' && sheetDismantleData[i].categoryType == 'Installation'">
+                <td><span class="badge bg-success">{{sheetDismantleData[i].categoryType}}</span></td>
+                
                 <td>{{sheetDismantleData[i].details[1].from == "" ? 'Nil' : sheetDismantleData[i].details[1].from}}</td>
                 <td>{{sheetDismantleData[i].details[1].to == "" ? 'Nil' : sheetDismantleData[i].details[1].to}}</td>
                 <td class="fw-bold text-center">{{sheetDismantleData[i].details[1].kms}}</td>
                 <td class="fw-bold text-center">{{sheetDismantleData[i].details[1].timespent}}</td>
+                
+              </ng-container>
+              <ng-container *ngIf="sheetDismantleData[i].isLeave == 'No' && sheetDismantleData[i].categoryType == 'Maintenance'">
+                <td><span class="badge bg-info text-dark">{{sheetDismantleData[i].categoryType}} </span></td>
+                <td>{{sheetDismantleData[i].details[1].from == "" ? 'Nil' : sheetDismantleData[i].details[1].from}}</td>
+                <td>{{sheetDismantleData[i].details[1].to == "" ? 'Nil' : sheetDismantleData[i].details[1].to}}</td>
+                <td class="fw-bold text-center">{{sheetDismantleData[i].details[1].kms}}</td>
+                <td class="fw-bold text-center">{{sheetDismantleData[i].details[1].timespent}}</td>
+                
               </ng-container>
               <ng-container *ngIf="sheetDismantleData[i].isLeave == 'Yes'">
+                <td ><span class="badge bg-danger">Leave</span></td>
                 <td colspan="1" class="text-red">{{sheetDismantleData[i].details[1].typeOfLeave  == "" ? 'Nil' : sheetDismantleData[i].details[1].typeOfLeave}}</td>
                 <td colspan="2" class="text-red">{{sheetDismantleData[i].details[1].leaveDetails == "" ? 'Nil' : sheetDismantleData[i].details[1].leaveDetails}}</td>
                 <td *ngIf="sheetDismantleData[i].details[1].proof !=''; else elseBlock">
@@ -139,7 +152,7 @@
 
           </ng-container>
           <tr class="table-success fs-5 fw-bold">
-            <td colspan="3">Total</td>
+            <td colspan="4">Total</td>
             <td class="text-center">{{this.totalKms}} kms</td>
             <td class="text-center">{{this.totalTimespent}} hrs</td>
           </tr>
@@ -171,6 +184,7 @@
               <th scope="col" >Date</th>
               <th scope="col" >Job</th>
               <th scope="col" >Work Description</th>
+              <th scope="col">Kms</th>
               <th scope="col">Time Spent</th>
               <!-- <th scope="col" rowspan="2"><i class="fa fa-clock-o " aria-hidden="true"></i> Total Hrs</th> -->
   
@@ -184,6 +198,7 @@
                   <td>{{sheetDismantleData[i].details[1].name}}</td>
                   
                   <td>{{sheetDismantleData[i].details[1].workDesc}}</td>
+                  <td class="fw-bold text-center">{{sheetDismantleData[i].details[1].kms}}</td>
                   <td class="fw-bold text-center">{{sheetDismantleData[i].details[1].timespent}}</td>
                 </ng-container>
                 <ng-container *ngIf="sheetDismantleData[i].isLeave == 'Yes'">
@@ -236,7 +251,7 @@
             </ng-container>
             <tr class="table-success fs-5 fw-bold">
               <td colspan="3">Total</td>
-              <!-- <td class="text-center">{{this.totalKms}} kms</td> -->
+              <td class="text-center">{{this.totalKms}} kms</td>
               <td class="text-center">{{this.totalTimespent}} hrs</td>
             </tr>
   

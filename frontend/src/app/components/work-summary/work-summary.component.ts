@@ -190,11 +190,12 @@ export class WorkSummaryComponent implements OnInit {
     for (var i = 0; i < this.timesheetData.length; i++) {
       
       if (this.timesheetData[i].leave == "No") {
-        if (this.timesheetData[i].job1DistanceFrom != '' && this.timesheetData[i].job1DistanceTo != '') {
+        if (this.timesheetData[i].job1DistanceFrom != '' && this.timesheetData[i].job1DistanceTo != '' && this.timesheetData[i].category1 == "Installation" ) {
 
           var obj = {
             date : this.timesheetData[i].createdOn,
             isLeave: "No",
+            categoryType: "Installation",
             details :[{}]
           }
           var job1 = {
@@ -210,10 +211,31 @@ export class WorkSummaryComponent implements OnInit {
           obj.details.push(job1);
           this.sheetDismantleData.push(obj);
         }
-        if (this.timesheetData[i].job2DistanceFrom != '' && this.timesheetData[i].job2DistanceTo != '') {
+        if (this.timesheetData[i].category1 == "Maintenance" || this.timesheetData[i].category2 == "Maintenance" || this.timesheetData[i].category3 == "Maintenance"|| this.timesheetData[i].category4 == "Maintenance" ||this.timesheetData[i].category5 == "Maintenance") {
           var obj = {
             date : this.timesheetData[i].createdOn,
             isLeave: "No",
+            categoryType: "Maintenance",
+            details :[{}]
+          }
+          var job5 = {
+            from: this.timesheetData[i].job5DistanceFrom,
+            to: this.timesheetData[i].job5DistanceTo,
+            kms: this.timesheetData[i].totalKms,
+            timespent: this.timesheetData[i].totalTimeSpent
+          }
+          
+          this.totalKms += Number(this.timesheetData[i].totalKms);
+          this.totalTimespent += Number(this.timesheetData[i].totalTimeSpent);
+          obj.details.push(job5);
+          
+      this.sheetDismantleData.push(obj);
+        }
+        if (this.timesheetData[i].job2DistanceFrom != '' && this.timesheetData[i].job2DistanceTo != '' && this.timesheetData[i].category2 == "Installation" ) {
+          var obj = {
+            date : this.timesheetData[i].createdOn,
+            isLeave: "No",
+            categoryType: "Installation",
             details :[{}]
           }
           var job2 = {
@@ -229,10 +251,11 @@ export class WorkSummaryComponent implements OnInit {
           
       this.sheetDismantleData.push(obj);
         }
-        if (this.timesheetData[i].job3DistanceFrom != '' && this.timesheetData[i].job3DistanceTo != '') {
+        if (this.timesheetData[i].job3DistanceFrom != '' && this.timesheetData[i].job3DistanceTo != '' && this.timesheetData[i].category3 == "Installation" ) {
           var obj = {
             date : this.timesheetData[i].createdOn,
             isLeave: "No",
+            categoryType: "Installation",
             details :[{}]
           }
           var job3 = {
@@ -248,10 +271,11 @@ export class WorkSummaryComponent implements OnInit {
           
       this.sheetDismantleData.push(obj);
         }
-        if (this.timesheetData[i].job4DistanceFrom != '' && this.timesheetData[i].job4DistanceTo != '') {
+        if (this.timesheetData[i].job4DistanceFrom != '' && this.timesheetData[i].job4DistanceTo != '' && this.timesheetData[i].category4 == "Installation" ) {
           var obj = {
             date : this.timesheetData[i].createdOn,
             isLeave: "No",
+            categoryType: "Installation",
             details :[{}]
           }
           var job4 = {
@@ -267,10 +291,11 @@ export class WorkSummaryComponent implements OnInit {
           
       this.sheetDismantleData.push(obj);
         }
-        if (this.timesheetData[i].job5DistanceFrom != '' && this.timesheetData[i].job5DistanceTo != '') {
+        if (this.timesheetData[i].job5DistanceFrom != '' && this.timesheetData[i].job5DistanceTo != '' && this.timesheetData[i].category4 == "Installation") {
           var obj = {
             date : this.timesheetData[i].createdOn,
             isLeave: "No",
+            categoryType: "Installation",
             details :[{}]
           }
           var job5 = {
@@ -290,14 +315,17 @@ export class WorkSummaryComponent implements OnInit {
           var obj = {
             date : this.timesheetData[i].createdOn,
             isLeave: "No",
+            categoryType: "Installation",
             details :[{}]
           }
           var job = {
             name: this.timesheetData[i].job1,
             workDesc: this.timesheetData[i].workDesc1 ? String(this.timesheetData[i].workDesc1).replace(/<[^>]+>/gm, '') : '',
+            kms: this.timesheetData[i].job1Kms,
             timespent: this.timesheetData[i].job1TimeSpent
           }
-
+          this.totalKms += Number(this.timesheetData[i].job1Kms);
+          
           this.totalTimespent += Number(this.timesheetData[i].job1TimeSpent);
 
           obj.details.push(job);
@@ -308,6 +336,7 @@ export class WorkSummaryComponent implements OnInit {
         var obj = {
           date : this.timesheetData[i].createdOn,
           isLeave: "No",
+          categoryType: "None",
           details :[{}]
         }
         const strippedString = this.timesheetData[i].leaveDetails.replace(/(<([^>]+)>)/gi, "");
