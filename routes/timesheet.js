@@ -32,7 +32,7 @@ router.put('/update/:id', async (req, res) => {
         const id = req.params.id;
         const newData = req.body;
     
-        Timesheet.updateOne({ _id: ObjectId(id) }, { $set: newData }, (err, result) => {
+        Timesheet.updateOne({ piid: id }, { $set: newData }, (err, result) => {
             if (err) throw err;
       
             res.json(result);
