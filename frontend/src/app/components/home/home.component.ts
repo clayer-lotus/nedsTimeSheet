@@ -20,6 +20,19 @@ export class HomeComponent implements OnInit {
   // dataTripleTime: any = [];
   dataPersonalCaresLeave: any = [];
 
+
+  isAdminOfficeAccounts:  any = "Yes";
+  timesheetData: any = [];
+
+  personName !: string;
+  from !: string;
+  to !: string;
+  headTimesheetData: any = [];
+  sheetDismantleData: any = [];
+  totalKms: number = 0;
+  totalTimespent: number = 0;
+  totalKmsArr: any = [];
+
   constructor(private _timesheet: TimesheetService) {
     this.startDate = new Date().toISOString().slice(0, 16);
     this.setDefaultStartAndEndDate();
@@ -61,8 +74,9 @@ export class HomeComponent implements OnInit {
     
     this.setDefaultStartAndEndDate();
     this.getAllByHours();
-
+   
   }
+  
 
   setDefaultStartAndEndDate() {
   
@@ -70,8 +84,20 @@ export class HomeComponent implements OnInit {
     this._timesheet.getFilterHomeTimesheet(this.startDate, this.endDate).subscribe(
       res => {
         console.log(res);
-        this.dataHours = res;
+        // this.from = this.startDate;
+        // this.to = this.endDate;
 
+       
+
+        this.dataHours = res;
+        for(var j=0;j<this.dataHours.length;j++)
+        {
+          // this.personName =  this.dataHours[j]._id;
+          // console.log(this.personName);
+          this.getFilterTimesheetFunc(this.startDate, this.endDate, this.dataHours[j]._id);
+  
+        }
+      
         for (var i = 0; i < this.dataHours.length; i++) {
           this.dataHours[i].rdoHours = 0;
           this.dataHours[i].unpaidleave = 0;
@@ -79,6 +105,8 @@ export class HomeComponent implements OnInit {
           this.dataHours[i].annualleave = 0;
           this.dataHours[i].personalAndCares = 0;
           this.dataHours[i].tripleTime = 0;
+         
+   
         }
         // console.log(this.dataHours);
 
@@ -193,6 +221,7 @@ export class HomeComponent implements OnInit {
   }
 
   searchFor() {
+    this.totalKmsArr = [];
     console.log(this.startDate.toString());
     var startdate = new Date(this.startDate.toString());
 
@@ -219,8 +248,18 @@ export class HomeComponent implements OnInit {
     this._timesheet.getFilterHomeTimesheet(formattedStartDate, formattedEndDate).subscribe(
       res => {
         console.log(res);
-        this.dataHours = res;
 
+        // this.from = formattedStartDate;
+        // this.to = formattedEndDate;
+
+        this.dataHours = res;
+        for(var j=0;j<this.dataHours.length;j++)
+        {
+          // this.personName =  this.dataHours[j]._id;
+          // console.log(this.personName);
+          this.getFilterTimesheetFunc(formattedStartDate, formattedEndDate, this.dataHours[j]._id);
+  
+        }
         for (var i = 0; i < this.dataHours.length; i++) {
           this.dataHours[i].rdoHours = 0;
           this.dataHours[i].unpaidleave = 0;
@@ -228,6 +267,7 @@ export class HomeComponent implements OnInit {
           this.dataHours[i].annualleave = 0;
           this.dataHours[i].personalAndCares = 0;
           this.dataHours[i].tripleTime = 0;
+          
         }
         // console.log(this.dataHours);
 
@@ -464,6 +504,228 @@ export class HomeComponent implements OnInit {
 
       }
     )
+  }
+
+  
+
+
+  getFilterTimesheetFunc(getStartDate : string, getEndDate : string, getPersonName : string) {
+    this._timesheet.getFilterTimesheet(getStartDate,getEndDate, getPersonName).subscribe(
+      res => {
+        this.timesheetData = res;
+        console.log(this.timesheetData);
+        for(var i=0;i<this.timesheetData.length;i++){
+          if(this.timesheetData[i].adminOfficeAccounts == 'No'){
+            this.isAdminOfficeAccounts = 'No';
+          }
+        }
+        console.log(this.isAdminOfficeAccounts);
+        this.dismantleData(getPersonName);
+      },
+      err => {
+
+      }
+    )
+  }
+
+  dismantleData(getPersonName: string) {
+    this.totalKms = 0;
+    this.totalTimespent =0
+
+    for (var i = 0; i < this.timesheetData.length; i++) {
+      
+      if (this.timesheetData[i].leave == "No") {
+        if (this.timesheetData[i].job1DistanceFrom != '' && this.timesheetData[i].job1DistanceTo != '' && this.timesheetData[i].category1 == "Installation" ) {
+
+          var obj = {
+            date : this.timesheetData[i].createdOn,
+            isLeave: "No",
+            categoryType: "Installation",
+            details :[{}]
+          }
+          var job1 = {
+            from: this.timesheetData[i].job1DistanceFrom,
+            to: this.timesheetData[i].job1DistanceTo,
+            kms: this.timesheetData[i].job1Kms,
+            timespent: this.timesheetData[i].job1TimeSpent
+          }
+
+          this.totalKms += Number(this.timesheetData[i].job1Kms);
+          this.totalTimespent += Number(this.timesheetData[i].job1TimeSpent);
+
+          obj.details.push(job1);
+         
+          this.sheetDismantleData.push(obj);
+        }
+        if (this.timesheetData[i].category1 == "Maintenance" || this.timesheetData[i].category2 == "Maintenance" || this.timesheetData[i].category3 == "Maintenance"|| this.timesheetData[i].category4 == "Maintenance" ||this.timesheetData[i].category5 == "Maintenance") {
+          var obj = {
+            date : this.timesheetData[i].createdOn,
+            isLeave: "No",
+            categoryType: "Maintenance",
+            details :[{}]
+          }
+          var job5 = {
+            from: this.timesheetData[i].job5DistanceFrom,
+            to: this.timesheetData[i].job5DistanceTo,
+            kms: this.timesheetData[i].totalKms,
+            timespent: this.timesheetData[i].totalTimeSpent
+          }
+          
+          this.totalKms += Number(this.timesheetData[i].totalKms);
+          this.totalTimespent += Number(this.timesheetData[i].totalTimeSpent);
+          obj.details.push(job5);
+         
+      
+          
+      this.sheetDismantleData.push(obj);
+        }
+        if (this.timesheetData[i].job2DistanceFrom != '' && this.timesheetData[i].job2DistanceTo != '' && this.timesheetData[i].category2 == "Installation" ) {
+          var obj = {
+            date : this.timesheetData[i].createdOn,
+            isLeave: "No",
+            categoryType: "Installation",
+            details :[{}]
+          }
+          var job2 = {
+            from: this.timesheetData[i].job2DistanceFrom,
+            to: this.timesheetData[i].job2DistanceTo,
+            kms: this.timesheetData[i].job2Kms,
+            timespent: this.timesheetData[i].job2TimeSpent
+          }
+          
+          this.totalKms += Number(this.timesheetData[i].job2Kms);
+          this.totalTimespent += Number(this.timesheetData[i].job2TimeSpent);
+          obj.details.push(job2);
+         
+      
+          
+      this.sheetDismantleData.push(obj);
+        }
+        if (this.timesheetData[i].job3DistanceFrom != '' && this.timesheetData[i].job3DistanceTo != '' && this.timesheetData[i].category3 == "Installation" ) {
+          var obj = {
+            date : this.timesheetData[i].createdOn,
+            isLeave: "No",
+            categoryType: "Installation",
+            details :[{}]
+          }
+          var job3 = {
+            from: this.timesheetData[i].job3DistanceFrom,
+            to: this.timesheetData[i].job3DistanceTo,
+            kms: this.timesheetData[i].job3Kms,
+            timespent: this.timesheetData[i].job3TimeSpent
+          }
+          
+          this.totalKms += Number(this.timesheetData[i].job3Kms);
+          this.totalTimespent += Number(this.timesheetData[i].job3TimeSpent);
+          obj.details.push(job3);
+         
+      
+          
+      this.sheetDismantleData.push(obj);
+        }
+        if (this.timesheetData[i].job4DistanceFrom != '' && this.timesheetData[i].job4DistanceTo != '' && this.timesheetData[i].category4 == "Installation" ) {
+          var obj = {
+            date : this.timesheetData[i].createdOn,
+            isLeave: "No",
+            categoryType: "Installation",
+            details :[{}]
+          }
+          var job4 = {
+            from: this.timesheetData[i].job4DistanceFrom,
+            to: this.timesheetData[i].job4DistanceTo,
+            kms: this.timesheetData[i].job4Kms,
+            timespent: this.timesheetData[i].job4TimeSpent
+          }
+          
+          this.totalKms += Number(this.timesheetData[i].job4Kms);
+          this.totalTimespent += Number(this.timesheetData[i].job4TimeSpent);
+          obj.details.push(job4);
+         
+      
+          
+      this.sheetDismantleData.push(obj);
+        }
+        if (this.timesheetData[i].job5DistanceFrom != '' && this.timesheetData[i].job5DistanceTo != '' && this.timesheetData[i].category4 == "Installation") {
+          var obj = {
+            date : this.timesheetData[i].createdOn,
+            isLeave: "No",
+            categoryType: "Installation",
+            details :[{}]
+          }
+          var job5 = {
+            from: this.timesheetData[i].job5DistanceFrom,
+            to: this.timesheetData[i].job5DistanceTo,
+            kms: this.timesheetData[i].job5Kms,
+            timespent: this.timesheetData[i].job5TimeSpent
+          }
+          
+          this.totalKms += Number(this.timesheetData[i].job5Kms);
+          this.totalTimespent += Number(this.timesheetData[i].job5TimeSpent);
+          obj.details.push(job5);
+         
+      
+          
+      this.sheetDismantleData.push(obj);
+        }
+        if(this.timesheetData[i].adminOfficeAccounts == 'Yes'){
+          var obj = {
+            date : this.timesheetData[i].createdOn,
+            isLeave: "No",
+            categoryType: "Installation",
+            details :[{}]
+          }
+          var job = {
+            name: this.timesheetData[i].job1,
+            workDesc: this.timesheetData[i].workDesc1 ? String(this.timesheetData[i].workDesc1).replace(/<[^>]+>/gm, '') : '',
+            kms: this.timesheetData[i].job1Kms,
+            timespent: this.timesheetData[i].job1TimeSpent
+          }
+          this.totalKms += Number(this.timesheetData[i].job1Kms);
+          
+          this.totalTimespent += Number(this.timesheetData[i].job1TimeSpent);
+
+          obj.details.push(job);
+          this.sheetDismantleData.push(obj);
+         
+      
+        } 
+      }
+      if (this.timesheetData[i].leave == "Yes") {
+        var obj = {
+          date : this.timesheetData[i].createdOn,
+          isLeave: "No",
+          categoryType: "None",
+          details :[{}]
+        }
+        const strippedString = this.timesheetData[i].leaveDetails.replace(/(<([^>]+)>)/gi, "");
+
+        var leave ={
+          typeOfLeave: this.timesheetData[i].leaveCategory,
+          leaveDetails : strippedString,
+          proof : this.timesheetData[i].leaveFileLink
+        }
+        obj.isLeave= this.timesheetData[i].leave;
+        obj.details.push(leave);
+        
+      this.sheetDismantleData.push(obj);
+      }
+
+
+    }
+
+    var kmsObj = {
+      id : getPersonName,
+      value: this.totalKms
+    }
+    console.log(this.sheetDismantleData);
+    console.log(this.totalKms);
+    this.totalKmsArr.push(kmsObj);
+    console.log(this.totalKmsArr);
+  }
+
+  findMatchingValue(id: string): string | undefined {
+    const item = this.totalKmsArr.find((obj: { id: string; }) => obj.id === id);
+    return item ? item.value : 0;
   }
 
 }

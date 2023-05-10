@@ -39,6 +39,7 @@
             <th scope="col">Double Time</th>
             <th scope="col">Triple Time</th>
             <th scope="col">RD0</th>
+            <th scope="col">KMS</th>
             <th scope="col">Personal/Carers Leave</th>
             <th scope="col">Annual Leave</th>
             <th scope="col">Public Holiday</th>
@@ -50,13 +51,14 @@
 
           <tr *ngFor="let dataHrs of dataHours; index as i">
             <th scope="row" class="text-center">{{i+1}}</th>
-            <th scope="row"><a
-                href="work-summary?name={{dataHrs._id}}&from={{startDate}}&to={{endDate}}" target="_blank">{{dataHrs._id}}</a></th>
+            <th scope="row"><a href="work-summary?name={{dataHrs._id}}&from={{startDate}}&to={{endDate}}"
+                target="_blank">{{dataHrs._id}}</a></th>
             <td class="text-center fw-bold">{{dataHrs.ordinaryHour}}</td>
             <td class="text-center fw-bold">{{dataHrs.timeAndAHalf}}</td>
             <td class="text-center fw-bold">{{dataHrs.doubleTime}}</td>
             <td class="text-center fw-bold">{{dataHrs.tripleTime}}</td>
             <td class="text-center fw-bold">{{dataHrs.rdoHours}}</td>
+            <td class="text-center fw-bold">{{ findMatchingValue(dataHrs._id) }}</td>
 
             <td class="text-center fw-bold">{{dataHrs.personalAndCares}}</td>
             <td class="text-center fw-bold">{{dataHrs.annualleave}}</td>
@@ -72,12 +74,12 @@
         <ng-template #elseBlock>
           <tbody>
             <tr class="text-center fs-5">
-              <td colspan="11">No record found</td>
+              <td colspan="13">No record found</td>
             </tr>
           </tbody>
         </ng-template>
       </table>
-     
+
     </div>
   </div>
 </section>
